@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   include ArticlesHelper
+  before_action :require_login, except: [:index, :show]
 
   def index
     @articles = Article.all
@@ -21,7 +22,7 @@ class ArticlesController < ApplicationController
     @article = Article.new(article_params)
     @article.save
 
-    redirect_to article_path(@article)
+    redirect_to(article_path(@article), notice: 'Article created succesfully.')
   end
 
   def edit
@@ -32,14 +33,14 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
     @article.update(article_params)
 
-    redirect_to article_path(@article)
+    redirect_to(article_path(@article), notice: 'Article updated succesfully.')
   end
 
   def destroy
     @article = Article.find(params[:id])
     @article.destroy
 
-    redirect_to articles_path
+    redirect_to(articles_path, notice: 'Article deleted succesfully.')
   end
 
 end
